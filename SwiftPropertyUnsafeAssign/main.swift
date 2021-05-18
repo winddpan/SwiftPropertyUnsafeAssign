@@ -7,26 +7,67 @@
 
 import Foundation
 
-class ClzA: NSObject {
-    let boolVal: Bool = false
-    let stringVal: String = "str"
-    let intVal: Int = 14
+if true {
+    class NSObjectClz: NSObject {
+        let boolVal: Bool = false
+        let stringVal: String = "str"
+        let intVal: Int = 14
+    }
+
+    var object = NSObjectClz()
+
+    print(object.intVal)
+    print(object.stringVal)
+
+    let oldVal = object.stringVal
+    SwiftPropertyUnsafeAssign.unsafeAssign(&object, keyPath: "stringVal", value: "aaaaa")
+    print("assign stringVal: \(oldVal) -> \(object.stringVal)")
+
+    let oldVal2 = object.intVal
+    SwiftPropertyUnsafeAssign.unsafeAssign(&object, keyPath: "intVal", value: 333)
+    print("assign intVal: \(oldVal2) -> \(object.intVal)")
 }
 
-var obj = ClzA()
+print("-----------")
 
-print(obj.intVal)
-print(obj.stringVal)
+if true {
+    class SwiftClz {
+        let boolVal: Bool = false
+        let stringVal: String = "str"
+        let intVal: Int = 14
+    }
+    var object = SwiftClz()
 
+    print(object.intVal)
+    print(object.stringVal)
 
-// SwiftPropertyAssign.assign(obj, keyPath: \.intVal, value: 44)
-// print("assign \\.intVal", obj.intVal)
-//
+    let oldVal = object.stringVal
+    SwiftPropertyUnsafeAssign.unsafeAssign(&object, keyPath: "stringVal", value: "aaaaa")
+    print("assign stringVal: \(oldVal) -> \(object.stringVal)")
 
-let oldVal = obj.stringVal
-SwiftPropertyUnsafeAssign.unsafeAssign(&obj, keyPath: "stringVal", value: "aaaaa")
-print("assign stringVal: \(oldVal) -> \(obj.stringVal)")
+    let oldVal2 = object.intVal
+    SwiftPropertyUnsafeAssign.unsafeAssign(&object, keyPath: "intVal", value: 333)
+    print("assign intVal: \(oldVal2) -> \(object.intVal)")
+}
 
-let oldVal2 = obj.intVal
-SwiftPropertyUnsafeAssign.unsafeAssign(&obj, keyPath: "intVal", value: 333)
-print("assign intVal: \(oldVal2) -> \(obj.intVal)")
+print("-----------")
+
+if true {
+    class SwiftClz {
+        @objc var boolVal: Bool = false
+        @objc var stringVal: String = "str"
+        @objc var intVal: Int = 14
+    }
+    var object = SwiftClz()
+
+    print(object.intVal)
+    print(object.stringVal)
+
+    let oldVal = object.stringVal
+    SwiftPropertyUnsafeAssign.unsafeAssign(&object, keyPath: "stringVal", value: "aaaaa")
+    print("assign stringVal: \(oldVal) -> \(object.stringVal)")
+
+    let oldVal2 = object.intVal
+    SwiftPropertyUnsafeAssign.unsafeAssign(&object, keyPath: "intVal", value: 333)
+    print("assign intVal: \(oldVal2) -> \(object.intVal)")
+}
