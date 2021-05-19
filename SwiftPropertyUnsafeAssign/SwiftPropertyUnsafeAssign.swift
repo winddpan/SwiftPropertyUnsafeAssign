@@ -7,11 +7,34 @@
 
 import Foundation
 
-struct SwiftPropertyUnsafeAssign<T> {
-    public static func unsafeAssign(_ target: inout T, keyPath: String, value: Any) {
+struct SwiftPropertyUnsafeAssign {
+    public static func unsafeAssign<T: AnyObject>(_ target: T, keyPath: String, value: Any) {
+        let rawPointer = headPointerOfClass(target)
+        if let properties = getProperties(forType: T.self) {
+            let bridgedPropertyList = _getBridgedPropertyList(anyClass: T.self)
+            properties.forEach { property in
+                if property.key == keyPath {
+                    if let nsObjet = target as? NSObject, bridgedPropertyList.contains(property.key) {
+                        nsObjet.setValue(value, forKey: property.key)
+                    } else {
+                        let propAddr = UnsafeMutableRawPointer(mutating: rawPointer.advanced(by: property.offset))
+                        extensions(of: property.type).write(value, to: propAddr)
+                    }
+                    return
+                }
+            }
+        }
+    }
+
+    public static func unsafeAssign<T>(_ target: inout T, keyPath: String, value: Any) {
         let rawPointer = headPointer(&target)
         if let properties = getProperties(forType: T.self) {
-            let bridgedPropertyList = _getBridgedPropertyList(anyClass: T.self as! AnyClass)
+            let bridgedPropertyList: Set<String>
+            if let clz = T.self as? AnyClass {
+                bridgedPropertyList = _getBridgedPropertyList(anyClass: clz)
+            } else {
+                bridgedPropertyList = []
+            }
             properties.forEach { property in
                 if property.key == keyPath {
                     if let nsObjet = target as? NSObject, bridgedPropertyList.contains(property.key) {
@@ -68,9 +91,9 @@ private extension SwiftPropertyUnsafeAssign {
             free(props)
         }
         #if swift(>=4.1)
-        count.deallocate()
+            count.deallocate()
         #else
-        count.deallocate(capacity: 1)
+            count.deallocate(capacity: 1)
         #endif
         return propertyList
     }

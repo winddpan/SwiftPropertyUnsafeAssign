@@ -14,24 +14,24 @@ if true {
         let intVal: Int = 14
     }
 
-    var object = NSObjectClz()
+    let object = NSObjectClz()
 
     print(object.intVal)
     print(object.stringVal)
 
     let oldVal = object.stringVal
-    SwiftPropertyUnsafeAssign.unsafeAssign(&object, keyPath: "stringVal", value: "aaaaa")
+    SwiftPropertyUnsafeAssign.unsafeAssign(object, keyPath: "stringVal", value: "aaaaa")
     print("assign stringVal: \(oldVal) -> \(object.stringVal)")
 
     let oldVal2 = object.intVal
-    SwiftPropertyUnsafeAssign.unsafeAssign(&object, keyPath: "intVal", value: 333)
+    SwiftPropertyUnsafeAssign.unsafeAssign(object, keyPath: "intVal", value: 333)
     print("assign intVal: \(oldVal2) -> \(object.intVal)")
 }
 
 print("-----------")
 
 if true {
-    class SwiftClz {
+    struct SwiftClz {
         let boolVal: Bool = false
         let stringVal: String = "str"
         let intVal: Int = 14
@@ -58,16 +58,16 @@ if true {
         @objc var stringVal: String = "str"
         @objc var intVal: Int = 14
     }
-    var object = SwiftClz()
+    let object = SwiftClz()
 
     print(object.intVal)
     print(object.stringVal)
 
     let oldVal = object.stringVal
-    SwiftPropertyUnsafeAssign.unsafeAssign(&object, keyPath: "stringVal", value: "aaaaa")
+    SwiftPropertyUnsafeAssign.unsafeAssign(object, keyPath: "stringVal", value: "aaaaa")
     print("assign stringVal: \(oldVal) -> \(object.stringVal)")
 
     let oldVal2 = object.intVal
-    SwiftPropertyUnsafeAssign.unsafeAssign(&object, keyPath: "intVal", value: 333)
+    SwiftPropertyUnsafeAssign.unsafeAssign(object, keyPath: "intVal", value: 333)
     print("assign intVal: \(oldVal2) -> \(object.intVal)")
 }
